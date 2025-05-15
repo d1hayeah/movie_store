@@ -61,7 +61,7 @@ def get_movie_by_id(movie_id):
     row = cursor.fetchone()
     conn.close()
     if row:
-        return ManageFilms(
+        return Films(
             id=row[0],
             title=row[1],
             director=row[2],
