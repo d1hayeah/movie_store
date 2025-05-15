@@ -33,11 +33,11 @@ def get_all_suppliers():
     cursor.execute("SELECT * FROM suppliers")
     rows = cursor.fetchall()
     conn.close()
-    return [Supplier(
+    return [ Supplier(
         id=row[0],
         name=row[1],
         contact_info=row[2]
-    ) for row in rows]
+    ) for row in rows ]
 
 def get_supplier_by_id(supplier_id):
     conn = get_connection()
