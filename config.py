@@ -1,0 +1,1 @@
+DB_NAME = "movies_store.db"
