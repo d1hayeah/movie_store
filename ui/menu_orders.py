@@ -48,10 +48,12 @@ def menu_orders():
 
             if order_type == "sale":
                 sale_date = input("Дата покупки (YYYY-MM-DD): ") 
+                print('Стоимость: {total_price}')
             elif order_type == "rental":
                 rental_date = input("Дата начала проката (YYYY-MM-DD): ") 
                 return_date = input("Дата возврата (YYYY-MM-DD): ")
                 total_price = movie.price * quantity / 6
+                print(f'Стоимость проката: {total_price}')
             else:
                 print("❌ Неверный тип заказа.")
                 continue
