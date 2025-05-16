@@ -46,7 +46,7 @@ def get_all_orders():
     cursor.execute("SELECT * FROM orders")
     rows = cursor.fetchall()
     conn.close()
-    return [Order(
+    return [ Order(
         order_id=row[0],
         movie_id=row[1],
         client_id=row[2],
@@ -56,7 +56,7 @@ def get_all_orders():
         return_date=row[6],
         quantity=row[7],
         total_price=row[8]
-    ) for row in rows]
+    ) for row in rows ]
 
 def get_order_by_id(order_id):
     conn = get_connection()

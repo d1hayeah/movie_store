@@ -42,7 +42,7 @@ def get_all_movies():
     cursor.execute("SELECT movie_id, title, director, genre, actors, format, release_year, stock_quantity, price FROM movies")
     rows = cursor.fetchall()
     conn.close()
-    return [Films(
+    return [ Films(
         movie_id=row[0],
         title=row[1],
         director=row[2],
@@ -52,7 +52,7 @@ def get_all_movies():
         release_year=row[6],
         stock_quantity=row[7],
         price=row[8]
-    ) for row in rows]
+    ) for row in rows ]
 
 def get_movie_by_id(movie_id):
     conn = get_connection()

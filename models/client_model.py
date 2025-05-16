@@ -34,12 +34,12 @@ def get_all_clients():
     cursor.execute("SELECT * FROM clients")
     rows = cursor.fetchall()
     conn.close()
-    return [Client(
+    return [ Client(
         client_id=row[0],
         name=row[1],
         phone=row[2],
         email=row[3]
-    ) for row in rows]
+    ) for row in rows ]
 
 def get_client_by_id(client_id):
     conn = get_connection()
