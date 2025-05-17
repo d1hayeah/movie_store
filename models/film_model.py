@@ -15,7 +15,7 @@ class Films:
     def save(self):
         conn = get_connection()
         cursor = conn.cursor()
-        if not self.movie_id:
+        if self.movie_id is None:
             cursor.execute("""INSERT INTO movies (title, director, genre, actors, format, release_year, stock_quantity, price)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
                             (self.title, self.director, self.genre, self.actors, self.format, self.release_year, self.stock_quantity, self.price))

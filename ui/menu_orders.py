@@ -94,18 +94,18 @@ def menu_orders():
             return_date = None
             movie = get_movie_by_id(current.movie_id)
             print("Оставьте поле пустым, чтобы не изменять.")
-            quantity = int(input("Количество: ")) or current.quantity
-            type = input(f"Тип заказа(sale - продажа, rental - прокат): ") or current.type
-            if type == "sale":
+            quantity = input(f"Количество: ") or current.quantity
+            order_type = input(f"Тип заказа(sale - продажа, rental - прокат): ") or current.type
+            if order_type == "sale":
                 sale_date = input("Дата покупки (YYYY-MM-DD): ") 
                 if movie:
-                    total_price = movie.price * quantity
+                    total_price = int(movie.price * quantity)
                 else:
                     total_price = 0
-            elif type == "rental":
+            elif order_type == "rental":
                 rental_date = input("Дата начала проката (YYYY-MM-DD): ") 
                 return_date = input("Дата возврата (YYYY-MM-DD): ")
-                total_price = movie.price * quantity / 6
+                total_price = movie.price * int(quantity) / 6
             else:
                 print("❌ Неверный тип заказа.")
                 continue
@@ -113,8 +113,9 @@ def menu_orders():
             
             updated = Order(
                 order_id=id_to_edit,
-                sale_date=sale_date,
-                type=type,
+                movie_id=current.movie_id,
+                client_id=current.client_id,
+                type=order_type,
                 rental_date=rental_date,
                 return_date=return_date,
                 quantity=quantity,

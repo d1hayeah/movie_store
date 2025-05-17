@@ -43,7 +43,7 @@ def menu_suppliers():
                 print("❌ Поставщик не найден!")
                 continue
 
-            name = input(f"Новое имя ({current.name}): ") or current.name
+            name = input(f"Новое имя: ") or current.name
             contact_info = input(f"Новые контакты: ") or current.contact_info
 
             updated = Supplier(supplier_id=id_to_edit, name=name, contact_info=contact_info)

@@ -45,7 +45,7 @@ def menu_movies():
                 continue
 
             print("Оставьте поле пустым, чтобы не изменять.")
-            title = input(f"Новое названи: ") or current.title
+            title = input(f"Новое названиe: ") or current.title
             director = input(f"Новый режиссер: ") or current.director
             genre = input(f"Новый жанр: ") or current.genre
             actors = input(f"Новые актеры: ") or current.actors

@@ -10,7 +10,7 @@ def initialize_db():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS movies (
-            id INTEGER PRIMARY KEY,
+            movie_id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             director TEXT NOT NULL,
             genre TEXT,
@@ -25,7 +25,7 @@ def initialize_db():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS clients (
-            id INTEGER PRIMARY KEY,
+            client_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             phone TEXT,
             email TEXT
@@ -34,7 +34,7 @@ def initialize_db():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS suppliers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            supplier_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             contact_info TEXT
         )
@@ -42,7 +42,7 @@ def initialize_db():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER PRIMARY KEY,
             movie_id INTEGER,
             client_id INTEGER,
             sale_date DATE,

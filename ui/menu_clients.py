@@ -13,8 +13,7 @@ def menu_clients():
         if choice == "1":
             clients = get_all_clients()
             print("\nСписок клиентов:")
-            for i in clients:
-                c = clients[i]
+            for c in clients:
                 print(f"{c.client_id}. {c.name} | Телефон: {c.phone} | Email: {c.email}")
 
         elif choice == "2":
@@ -35,8 +34,7 @@ def menu_clients():
         elif choice == "4":
             id_to_edit = int(input("Введите ID клиента для редактирования: "))
             current_client = None
-            for i in get_all_clients():
-                c = get_all_clients()[i]
+            for c in get_all_clients():
                 if c.client_id == id_to_edit:
                     current_client = c
                     break
