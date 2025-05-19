@@ -13,15 +13,15 @@ def menu_suppliers():
         if choice == "1":
             suppliers = get_all_suppliers()
             print("\nСписок поставщиков:")
-            for i in range(len(suppliers)):
-                s = suppliers[i]
-                print(f"{s.supplier_id}. {s.name} | Контакты: {s.contact_info}")
+            for s in suppliers:
+                print(f"{s.supplier_id}. {s.name} | Телефон: {s.phone} | Email: {s.email}")
 
         elif choice == "2":
             print("\n=== Добавление поставщика ===")
             name = input("Название: ")
-            contact_info = input("Контактная информация: ")
-            supplier = Supplier(name=name, contact_info=contact_info)
+            phone = input("Телефон: ")
+            email = input("Email: ")
+            supplier = Supplier(name=name, phone=phone, email=email)
             supplier.save()
             print("✅ Поставщик добавлен.")
 
@@ -34,8 +34,7 @@ def menu_suppliers():
         elif choice == "4":
             id_to_edit = int(input("ID поставщика: "))
             current = None
-            for i in range(len(get_all_suppliers())):
-                s = get_all_suppliers()[i]
+            for s in get_all_suppliers():
                 if s.supplier_id == id_to_edit:
                     current = s
                     break
@@ -44,9 +43,10 @@ def menu_suppliers():
                 continue
 
             name = input(f"Новое имя: ") or current.name
-            contact_info = input(f"Новые контакты: ") or current.contact_info
+            phone = input(f"Новый телефон: ") or current.phone
+            email = input(f"Новый email: ") or current.email
 
-            updated = Supplier(supplier_id=id_to_edit, name=name, contact_info=contact_info)
+            updated = Supplier(supplier_id=id_to_edit, name=name, phone=phone, email=email)
             updated.save()
             print("✅ Поставщик обновлён.")
 

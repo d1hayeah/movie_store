@@ -18,7 +18,7 @@ def menu_orders():
             for o in orders:
                 movie = get_movie_by_id(o.movie_id) if o.movie_id else None
                 movie_title = movie.title if movie else "-"
-                print(f"{o.order_id}. Фильм: {movie_title} | Клиент ID: {o.client_id} | Тип: {o.type} | Продажа: {o.sale_date or '-'} | Прокат: {o.rental_date or '-'} - {o.return_date or '-'} | Кол-во: {o.quantity} | Сумма: {o.total_price} руб.")
+                print(f"{o.order_id}. Фильм: {movie_title} | Клиент ID: {o.client_id} | Дата продажи: {o.sale_date or '-'} | Кол-во: {o.quantity} | Сумма: {o.total_price} руб.")
 
         elif choice == "2":
             print("Доступные клиенты:")
@@ -33,38 +33,16 @@ def menu_orders():
                 print(f"{m.movie_id}. {m.title} (На складе: {m.stock_quantity})")
             movie_id = int(input("Введите ID фильма: "))
 
-            order_type = input("Тип заказа (sale - продажа, rental - прокат): ").strip().lower()
             quantity = int(input("Количество: "))
             movie = get_movie_by_id(movie_id)
-            total_price = None
-            if movie:
-                total_price = movie.price * quantity
-            else:
-                total_price = 0
+            total_price = movie.price * quantity if movie else 0
 
-            sale_date = None
-            rental_date = None
-            return_date = None
-
-            if order_type == "sale":
-                sale_date = input("Дата покупки (YYYY-MM-DD): ") 
-                print('Стоимость: {total_price}')
-            elif order_type == "rental":
-                rental_date = input("Дата начала проката (YYYY-MM-DD): ") 
-                return_date = input("Дата возврата (YYYY-MM-DD): ")
-                total_price = movie.price * quantity / 6
-                print(f'Стоимость проката: {total_price}')
-            else:
-                print("❌ Неверный тип заказа.")
-                continue
+            sale_date = input("Дата продажи (YYYY-MM-DD): ")
 
             order = Order(
                 movie_id=movie_id,
                 client_id=client_id,
                 sale_date=sale_date,
-                type=order_type,
-                rental_date=rental_date,
-                return_date=return_date,
                 quantity=quantity,
                 total_price=total_price
             )
@@ -88,41 +66,26 @@ def menu_orders():
                 print("❌ Заказ не найден!")
                 continue
             
-            total_price = None
-            sale_date = None
-            rental_date = None
-            return_date = None
-            movie = get_movie_by_id(current.movie_id)
             print("Оставьте поле пустым, чтобы не изменять.")
-            quantity = input(f"Количество: ") or current.quantity
-            order_type = input(f"Тип заказа(sale - продажа, rental - прокат): ") or current.type
-            if order_type == "sale":
-                sale_date = input("Дата покупки (YYYY-MM-DD): ") 
-                if movie:
-                    total_price = int(movie.price * quantity)
-                else:
-                    total_price = 0
-            elif order_type == "rental":
-                rental_date = input("Дата начала проката (YYYY-MM-DD): ") 
-                return_date = input("Дата возврата (YYYY-MM-DD): ")
-                total_price = movie.price * int(quantity) / 6
+            quantity = input(f"Количествo: ") or current.quantity
+            sale_date = input(f"Дата продажи: ") or current.sale_date
+            movie = get_movie_by_id(current.movie_id)
+            if movie:
+                total_price = movie.price * int(quantity) 
             else:
-                print("❌ Неверный тип заказа.")
-                continue
-            
-            
+                total_price = 0
+
             updated = Order(
                 order_id=id_to_edit,
                 movie_id=current.movie_id,
                 client_id=current.client_id,
-                type=order_type,
-                rental_date=rental_date,
-                return_date=return_date,
+                sale_date=sale_date,
                 quantity=quantity,
                 total_price=total_price
             )
             updated.save()
-            print("✅ Фильм обновлён.")
+            print("✅ Заказ обновлён.")
+
         elif choice == "0":
             break
         else:

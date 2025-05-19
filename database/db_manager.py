@@ -11,6 +11,7 @@ def initialize_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS movies (
             movie_id INTEGER PRIMARY KEY,
+            supplier_id INTEGER,
             title TEXT NOT NULL,
             director TEXT NOT NULL,
             genre TEXT,
@@ -18,7 +19,8 @@ def initialize_db():
             format TEXT,
             release_year INTEGER,
             stock_quantity INTEGER,
-            price INTEGER
+            price INTEGER,
+            FOREIGN KEY(supplier_id) REFERENCES suppliers(supplier_id)
         )
     ''')
 
@@ -36,7 +38,8 @@ def initialize_db():
         CREATE TABLE IF NOT EXISTS suppliers (
             supplier_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            contact_info TEXT
+            phone TEXT,
+            email TEXT
         )
     ''')
 
@@ -55,7 +58,28 @@ def initialize_db():
             FOREIGN KEY(client_id) REFERENCES clients(id)
         )
     ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS rentals (
+            rental_id INTEGER PRIMARY KEY,
+            client_id INTEGER NOT NULL,
+            movie_id INTEGER NOT NULL,
+            rental_date DATE NOT NULL,
+            return_date DATE,
+            rental_price INTEGER,  
+            FOREIGN KEY(client_id) REFERENCES clients(client_id),
+            FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
+        )
+    ''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS employees (
+            employee_id INTEGER PRIMARY KEY,
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            position TEXT NOT NULL,
+        )
+    ''')
 
 
     conn.commit()

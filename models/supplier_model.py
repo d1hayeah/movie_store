@@ -1,21 +1,22 @@
 from database.db_manager import get_connection
 
 class Supplier:
-    def __init__(self, supplier_id=None, name=None, contact_info=None):
+    def __init__(self, supplier_id=None, name=None, phone=None, email=None):
         self.supplier_id = supplier_id
         self.name = name
-        self.contact_info = contact_info
+        self.phone = phone
+        self.email = email
 
     def save(self):
         conn = get_connection()
         cursor = conn.cursor()
         if self.supplier_id is None:
-            cursor.execute("INSERT INTO suppliers(name, contact_info) VALUES (?, ?)",
-                           (self.name, self.contact_info))
+            cursor.execute("INSERT INTO suppliers(name, phone, email) VALUES (?, ?, ?)",
+                           (self.name, self.phone, self.email))
             self.supplier_id = cursor.lastrowid
         else:
-            cursor.execute("UPDATE suppliers SET name=?, contact_info=? WHERE supplier_id=?",
-                           (self.name, self.contact_info, self.supplier_id))
+            cursor.execute("UPDATE suppliers SET name=?, phone=?, email=? WHERE supplier_id=?",
+                           (self.name, self.phone, self.email, self.supplier_id))
         conn.commit()
         conn.close()
 
@@ -36,7 +37,8 @@ def get_all_suppliers():
     return [ Supplier(
         supplier_id=row[0],
         name=row[1],
-        contact_info=row[2]
+        phone=row[2],
+        email=row[3]
     ) for row in rows ]
 
 def get_supplier_by_id(supplier_id):
@@ -49,6 +51,7 @@ def get_supplier_by_id(supplier_id):
         return Supplier(
             supplier_id=row[0],
             name=row[1],
-            contact_info=row[2]
+            phone=row[2],
+            email=row[3]
         )
     return None
