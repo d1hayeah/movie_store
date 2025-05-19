@@ -54,8 +54,10 @@ def initialize_db():
             return_date DATE,
             quantity INTEGER,
             total_price INTEGER,
-            FOREIGN KEY(movie_id) REFERENCES movies(id),
-            FOREIGN KEY(client_id) REFERENCES clients(id)
+            employee_id INTEGER,
+            FOREIGN KEY(movie_id) REFERENCES movies(movie_id),
+            FOREIGN KEY(client_id) REFERENCES clients(client_id),
+            FOREIGN KEY(employee_id) REFERENCES employees(employee_id)
         )
     ''')
     
@@ -67,8 +69,10 @@ def initialize_db():
             rental_date DATE NOT NULL,
             return_date DATE,
             rental_price INTEGER,  
+            employee_id INTEGER,
             FOREIGN KEY(client_id) REFERENCES clients(client_id),
-            FOREIGN KEY(movie_id) REFERENCES movies(movie_id)
+            FOREIGN KEY(movie_id) REFERENCES movies(movie_id),
+            FOREIGN KEY(employee_id) REFERENCES employees(employee_id)
         )
     ''')
 
@@ -77,7 +81,7 @@ def initialize_db():
             employee_id INTEGER PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
-            position TEXT NOT NULL,
+            position TEXT NOT NULL
         )
     ''')
 

@@ -1,26 +1,27 @@
 from database.db_manager import get_connection
 
 class Rental:
-    def __init__(self, rental_id=None, client_id=None, movie_id=None, rental_date=None, return_date=None, rental_price=None):
+    def __init__(self, rental_id=None, client_id=None, movie_id=None, rental_date=None, return_date=None, rental_price=None, employee_id=None):
         self.rental_id = rental_id
         self.client_id = client_id
         self.movie_id = movie_id
         self.rental_date = rental_date
         self.return_date = return_date
         self.rental_price = rental_price
+        self.employee_id = employee_id
 
     def save(self):
         conn = get_connection()
         cursor = conn.cursor()
         if self.rental_id is None:
-            cursor.execute("""INSERT INTO rentals (client_id, movie_id, rental_date, return_date, rental_price)
-                            VALUES (?, ?, ?, ?, ?)""", 
-                            (self.client_id, self.movie_id, self.rental_date, self.return_date, self.rental_price))
+            cursor.execute("""INSERT INTO rentals (client_id, movie_id, rental_date, return_date, rental_price, employee_id)
+                            VALUES (?, ?, ?, ?, ?, ?)""", 
+                            (self.client_id, self.movie_id, self.rental_date, self.return_date, self.rental_price, self.employee_id))
             self.rental_id = cursor.lastrowid
         else:
-            cursor.execute("""UPDATE rentals SET client_id = ?, movie_id = ?, rental_date = ?, return_date = ?, rental_price = ?
+            cursor.execute("""UPDATE rentals SET client_id = ?, movie_id = ?, rental_date = ?, return_date = ?, rental_price = ?, employee_id = ?
                                 WHERE rental_id = ?""", 
-                                (self.client_id, self.movie_id, self.rental_date, self.return_date, self.rental_price, self.rental_id))
+                                (self.client_id, self.movie_id, self.rental_date, self.return_date, self.rental_price, self.employee_id, self.rental_id))
         conn.commit()
         conn.close()
 
@@ -44,7 +45,8 @@ def get_all_rentals():
         movie_id=row[2],
         rental_date=row[3],
         return_date=row[4],
-        rental_price=row[5]
+        rental_price=row[5],
+        employee_id=row[6]
     ) for row in rows ]
 
 def get_rental_by_id(rental_id):
@@ -60,6 +62,7 @@ def get_rental_by_id(rental_id):
             movie_id=row[2],
             rental_date=row[3],
             return_date=row[4],
-            rental_price=row[5]
+            rental_price=row[5],
+            employee_id=row[6]
         )
     return None

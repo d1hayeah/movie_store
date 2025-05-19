@@ -1,6 +1,7 @@
 from models.order_model import Order, get_all_orders, get_order_by_id
 from models.film_model import Films, get_all_movies, get_movie_by_id
 from models.client_model import get_all_clients
+from models.employee_model import get_all_employees, get_employee_by_id
 
 def menu_orders():
     while True:
@@ -16,9 +17,10 @@ def menu_orders():
             orders = get_all_orders()
             print("\nСписок заказов:")
             for o in orders:
-                movie = get_movie_by_id(o.movie_id) if o.movie_id else None
-                movie_title = movie.title if movie else "-"
-                print(f"{o.order_id}. Фильм: {movie_title} | Клиент ID: {o.client_id} | Дата продажи: {o.sale_date or '-'} | Кол-во: {o.quantity} | Сумма: {o.total_price} руб.")
+                movie = get_movie_by_id(o.movie_id) 
+                employee = get_employee_by_id(o.employee_id) 
+                employee_str = f"{employee.first_name} {employee.last_name}" 
+                print(f"{o.order_id}. Фильм: {movie.title } | Клиент ID: {o.client_id} | Дата продажи: {o.sale_date or '-'} | Кол-во: {o.quantity} | Сумма: {o.total_price} руб. | Сотрудник: {employee_str}")
 
         elif choice == "2":
             print("Доступные клиенты:")
@@ -33,6 +35,12 @@ def menu_orders():
                 print(f"{m.movie_id}. {m.title} (На складе: {m.stock_quantity})")
             movie_id = int(input("Введите ID фильма: "))
 
+            print("Доступные сотрудники:")
+            employees = get_all_employees()
+            for e in employees:
+                print(f"{e.employee_id}. {e.first_name} {e.last_name}")
+            employee_id = int(input("Введите ID сотрудника: "))
+
             quantity = int(input("Количество: "))
             movie = get_movie_by_id(movie_id)
             total_price = movie.price * quantity if movie else 0
@@ -44,7 +52,8 @@ def menu_orders():
                 client_id=client_id,
                 sale_date=sale_date,
                 quantity=quantity,
-                total_price=total_price
+                total_price=total_price,
+                employee_id=employee_id
             )
             order.save()
             print("✅ Заказ добавлен.")
@@ -65,7 +74,7 @@ def menu_orders():
             if not current:
                 print("❌ Заказ не найден!")
                 continue
-            
+
             print("Оставьте поле пустым, чтобы не изменять.")
             quantity = input(f"Количествo: ") or current.quantity
             sale_date = input(f"Дата продажи: ") or current.sale_date
@@ -75,13 +84,20 @@ def menu_orders():
             else:
                 total_price = 0
 
+            print("Доступные сотрудники:")
+            employees = get_all_employees()
+            for e in employees:
+                print(f"{e.employee_id}. {e.first_name} {e.last_name}")
+            employee_id = input(f"ID сотрудника: ") or current.employee_id
+
             updated = Order(
                 order_id=id_to_edit,
                 movie_id=current.movie_id,
                 client_id=current.client_id,
                 sale_date=sale_date,
                 quantity=quantity,
-                total_price=total_price
+                total_price=total_price,
+                employee_id=int(employee_id)
             )
             updated.save()
             print("✅ Заказ обновлён.")
