@@ -50,8 +50,6 @@ def initialize_db():
             client_id INTEGER,
             sale_date DATE,
             type TEXT,
-            rental_date DATE,
-            return_date DATE,
             quantity INTEGER,
             total_price INTEGER,
             employee_id INTEGER,

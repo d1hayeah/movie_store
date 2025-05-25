@@ -1,4 +1,5 @@
 from models.film_model import Films, get_all_movies, get_movie_by_id
+from models.supplier_model import get_all_suppliers
 
 def menu_movies():
     while True:
@@ -14,10 +15,16 @@ def menu_movies():
             movies = get_all_movies()
             print("\nСписок фильмов:")
             for m in movies:
-                print(f"{m.movie_id}. {m.title} | Режиссер: {m.director} | Жанр: {m.genre}")
+                print(f"{m.movie_id}. {m.title} | Режиссер: {m.director} | Жанр: {m.genre} | Кол-во: {m.stock_quantity} | Цена: {m.price}")
 
         elif choice == "2":
             print("\n=== Добавление фильма ===")
+            suppliers = get_all_suppliers()
+            print("Доступные поставщики:")
+            for s in suppliers:
+                print(f"{s.supplier_id}. {s.name}")
+            supplier_id = input("ID поставщика (оставьте пустым если нет): ")
+            supplier_id = int(supplier_id) if supplier_id else None
             title = input("Название: ")
             director = input("Режиссер: ")
             genre = input("Жанр: ")
@@ -26,7 +33,7 @@ def menu_movies():
             release_year = int(input("Год выпуска: "))
             stock = int(input("Количество на складе: "))
             price = int(input("Цена: "))
-            movie = Films(title=title, director=director, genre=genre, actors=actors,
+            movie = Films(supplier_id=supplier_id, title=title, director=director, genre=genre, actors=actors,
                           format=format, release_year=release_year, stock_quantity=stock, price=price)
             movie.save()
             print("✅ Фильм добавлен.")
@@ -45,6 +52,11 @@ def menu_movies():
                 continue
 
             print("Оставьте поле пустым, чтобы не изменять.")
+            suppliers = get_all_suppliers()
+            print("Доступные поставщики:")
+            for s in suppliers:
+                print(f"{s.supplier_id}. {s.name}")
+            supplier_id = input(f"ID поставщика: ") or current.supplier_id
             title = input(f"Новое названиe: ") or current.title
             director = input(f"Новый режиссер: ") or current.director
             genre = input(f"Новый жанр: ") or current.genre
@@ -53,7 +65,7 @@ def menu_movies():
             release_year = input(f"Новый год: ") or current.release_year
             stock = input(f"Новое количество: ") or current.stock_quantity
             price = input(f"Новая цена: ") or current.price 
-            updated = Films(movie_id=id_to_edit, title=title, director=director, genre=genre,
+            updated = Films(movie_id=id_to_edit, supplier_id=int(supplier_id) if supplier_id else None, title=title, director=director, genre=genre,
                             actors=actors, format=format, release_year=int(release_year),
                             stock_quantity=int(stock), price=int(price))
             updated.save()
